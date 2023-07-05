@@ -4,11 +4,13 @@ import { cn } from "@/lib/utils";
 import React, { FC, useState } from "react";
 import { Button } from "./ui/Button";
 import { signIn } from "next-auth/react";
+import { useToast } from "@/hooks/use-toast";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const UserAuthForm: FC<UserAuthFormProps> = ({}) => {
   const [loading, setLoading] = useState(false);
+  const {toast} = useToast();
 
   const loginWithGoogle = async () => {
     setLoading(true);
@@ -16,7 +18,11 @@ const UserAuthForm: FC<UserAuthFormProps> = ({}) => {
       await signIn("google");
     } 
     catch (e) {
-        //toast
+        toast({
+          title: "There was a problem",
+          description: "There was a problem signing in with google",
+          variant: "destructive"
+        })
     } 
     finally {
       setLoading(false);
